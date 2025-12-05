@@ -1,11 +1,8 @@
 # Load libraries
 library(tidyverse)
-library(bonsai)
+library(tidymodels)
 library(lightgbm)
-library(glmnet)
 library(recipes)
-library(data.table)
-library(Matrix)
 library(vroom)
 library(embed)
 
@@ -94,7 +91,7 @@ submission <- data.frame(
 submission <- submission[!duplicated(submission$id), ]
 
 #Write out the file to submit to Kaggle
-vroom_write(x = submission, file = "./boosted.csv", delim = ",")
+vroom_write(x = submission, file = "./boosted2.csv", delim = ",")
 
 
 
