@@ -11,6 +11,9 @@ library(embed)
 train_df <- vroom('train.csv')
 test_df <- vroom('test.csv')
 
+summary(train_df)
+str(train_df)
+
 #Fix column error in preds fn
 continuous_cols <- grep("^cont", names(train_df), value = TRUE)
 
@@ -22,13 +25,10 @@ for(col in continuous_cols) {
   }
 }
 
-summary(train_df)
-str(train_df)
-
 train_df$loss <- as.numeric(gsub("[^0-9.-]", "", as.character(train_df$loss)))
 train_df$loss[is.na(train_df$loss)] <- median(train_df$loss, na.rm = TRUE)
 
-#Target Encoding
+##Target Encoding
 my_recipe <- recipe(loss ~ ., data = train_df) |>
   step_rm(id) |> 
   step_other(all_nominal_predictors(), threshold = .001) |> 
@@ -56,13 +56,13 @@ acs_wf <- workflow() %>%
   add_recipe(my_recipe) %>%
   add_model(boost_model)
 
-#Tuning Grid
+##Tuning Grid
 grid_of_tune <- grid_regular(tree_depth(),
                              trees(),
                              learn_rate(),
                              levels = 3)
 
-#CV Split
+##CV Split
 set.seed(294)
 folds <- vfold_cv(train_df, v = 5)
 
