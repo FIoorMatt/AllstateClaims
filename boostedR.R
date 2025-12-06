@@ -4,6 +4,7 @@ library(tidymodels)
 library(lightgbm)
 library(recipes)
 library(vroom)
+library(bonsai)
 library(embed)
 
 
